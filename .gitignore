@@ -1,0 +1,29 @@
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Secrets
+*.pem
+*.key
+secrets/
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+logs/
+
+# Generated QA reports (keep the folder)
+output/qa-reports/*
+!output/qa-reports/.gitkeep
+
+# Client ticket data: raw exports and cleaned copies (keep the folders)
+input/tickets/*
+!input/tickets/.gitkeep
+output/cleaned-tickets/*
+!output/cleaned-tickets/.gitkeep
+
+# macOS
+.DS_Store
