@@ -1,4 +1,4 @@
-# Sample Requirements — Postcode Validation for Boiler Installation
+# Sample Requirements — Serial Number Validation for Appliance Registration
 
 > **Purpose:** Demonstration and evaluation input for QA NiNJA. This ticket deliberately contains gaps, ambiguities and a contradiction. The "Evaluator Notes" section at the end lists them so a QA Engineer can check QA NiNJA's output. **When running QA NiNJA on this file for evaluation, ask it to ignore the Evaluator Notes section.**
 
@@ -6,48 +6,48 @@
 
 ## Ticket
 
-- **Ticket ID:** BOIL-1427
-- **Title:** Validate customer postcode before booking a boiler installation
-- **Product area:** E-commerce — Boiler Installation Quote & Booking
+- **Ticket ID:** APP-5042
+- **Title:** Validate appliance serial number before warranty registration
+- **Product area:** E-commerce — Appliance Warranty Registration
 - **Market:** United Kingdom
 
 ## User Story
 
-As a homeowner shopping for a new boiler online,
-I want to enter my postcode at the start of the installation quote journey,
-so that I know quickly whether installation is available in my area before I choose a boiler.
+As a customer purchasing a new household appliance online,
+I want to enter my appliance serial number at the start of the warranty registration process,
+so that I know quickly whether the appliance is eligible for coverage before I complete the registration.
 
 ## Acceptance Criteria
 
-**AC-1** — The postcode field is displayed on the "Check installation availability" step, before boiler selection.
+**AC-1** — The serial number field is displayed on the "Check appliance eligibility" step, before warranty plan selection.
 
-**AC-2** — The user must enter a valid UK postcode.
+**AC-2** — The user must enter a valid serial number.
 
-**AC-3** — The postcode must be between 5 and 7 characters long.
+**AC-3** — The serial number must be between 8 and 20 characters long.
 
-**AC-4** — Postcodes are not case-sensitive (e.g. `sw1a 1aa` and `SW1A 1AA` are both accepted).
+**AC-4** — Serial numbers are not case-sensitive (e.g. `xyz123abc` and `XYZ123ABC` are both accepted).
 
-**AC-5** — If the postcode is in a serviceable area, the user proceeds to the boiler selection page.
+**AC-5** — If the serial number is in an eligible product line, the user proceeds to the warranty plan selection page.
 
-**AC-6** — If the postcode is not in a serviceable area, an appropriate message is shown.
+**AC-6** — If the serial number is not eligible, an appropriate message is shown.
 
 **AC-7** — Validation should be fast.
 
-**AC-8** — The entered postcode is pre-filled on the checkout address form.
+**AC-8** — The entered serial number is pre-filled on the warranty confirmation form.
 
 ## Technical Context
 
-- Postcode format validation happens on the frontend; serviceability is checked via the internal **Coverage Service** (`GET /coverage?postcode=`), which returns `serviceable: true | false`.
-- The Coverage Service is maintained by another team and is also used by the **Boiler Servicing** booking flow.
-- The checkout address form uses a third-party address lookup that accepts postcodes **up to 8 characters including the space**.
-- Serviceable areas are configured by the Operations team and may change weekly.
-- Analytics event `postcode_checked` is fired on submit.
+- Serial number format validation happens on the frontend; eligibility is checked via the internal **Product Registry Service** (`GET /registry?serial=`), which returns `eligible: true | false`.
+- The Product Registry Service is maintained by another team and is also used by the **Appliance Support** booking flow.
+- The warranty confirmation form uses a third-party form that accepts serial numbers **up to 25 characters including hyphens**.
+- Eligible product lines are configured by the Product team and may change quarterly.
+- Analytics event `serial_checked` is fired on submit.
 
 ## Known Missing Requirements (as acknowledged by the BA)
 
-- Exact wording of the "not serviceable" message has not been agreed.
-- Behavior when the Coverage Service is unavailable is not defined.
-- It is not decided whether users in non-serviceable areas can register interest / leave contact details.
+- Exact wording of the "not eligible" message has not been agreed.
+- Behavior when the Product Registry Service is unavailable is not defined.
+- It is not decided whether users with ineligible serial numbers can leave contact details for future eligibility.
 
 ---
 
@@ -55,12 +55,12 @@ so that I know quickly whether installation is available in my area before I cho
 
 Expected findings QA NiNJA should surface (non-exhaustive):
 
-- **Contradiction:** AC-3 (5–7 characters) vs. Technical Context (address lookup accepts up to 8 characters including the space) — also unclear whether the space counts in AC-3.
-- **Ambiguity:** "valid UK postcode" (AC-2) — format only, or must it exist? BFPO / Crown Dependencies (GY, JE, IM) / special postcodes?
+- **Contradiction:** AC-3 (8–20 characters) vs. Technical Context (form accepts up to 25 characters including hyphens) — also unclear whether hyphens count in AC-3.
+- **Ambiguity:** "valid serial number" (AC-2) — format only, or must it exist? Are special characters allowed? Regional variants?
 - **Ambiguity:** "appropriate message" (AC-6), "fast" (AC-7) — no wording / no measurable threshold.
-- **Ambiguity:** whitespace handling — leading/trailing spaces, missing internal space (`SW1A1AA`), multiple spaces.
-- **Missing:** error message for invalid format; empty field behavior; Coverage Service timeout/failure behavior; whether the user can edit the postcode later; what happens if the checkout address postcode differs from the checked postcode (AC-8).
+- **Ambiguity:** whitespace and hyphen handling — leading/trailing spaces, internal hyphens, multiple spaces.
+- **Missing:** error message for invalid format; empty field behavior; Product Registry Service timeout/failure behavior; whether the user can edit the serial number later; what happens if the warranty confirmation serial number differs from the checked serial number (AC-8).
 - **Missing:** which analytics properties are sent; whether invalid submissions fire the event.
-- **What-if:** serviceable area changes between the availability check and checkout; user navigates back and changes postcode; double submit.
-- **Regression:** Boiler Servicing flow (shared Coverage Service); checkout address lookup; analytics.
+- **What-if:** eligible product lines change between the eligibility check and warranty confirmation; user navigates back and changes serial number; double submit.
+- **Regression:** Appliance Support flow (shared Product Registry Service); warranty confirmation form; analytics.
 - **Expected readiness:** NOT READY or NEEDS CLARIFICATION (contradiction on a core length rule and undefined failure behavior).

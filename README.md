@@ -72,9 +72,9 @@ The skill is instruction-based Markdown only: no code, no dependencies, no exter
 
 | File | Scenario | What it demonstrates |
 |------|----------|----------------------|
-| `demo/tickets/DEMO-001-boiler-booking.md` | Boiler booking confirmation | A clear ticket: every AC gets an executable check |
-| `demo/tickets/DEMO-002-solar-battery.md` | Solar battery application | Missing expected behaviour produces questions and blocked checks |
-| `demo/tickets/DEMO-003-heat-pump.md` | Heat pump application review | Mixed confirmed and unresolved conditions; out-of-scope items excluded |
+| `demo/tickets/DEMO-001-washing-machine-order.md` | Washing machine order confirmation | A clear ticket: every AC gets an executable check |
+| `demo/tickets/DEMO-002-refrigerator-warranty.md` | Refrigerator warranty claim application | Missing expected behaviour produces questions and blocked checks |
+| `demo/tickets/DEMO-003-dishwasher-repair.md` | Dishwasher repair request review | Mixed confirmed and unresolved conditions; out-of-scope items excluded |
 
 All demo tickets are synthetic demo data.
 
@@ -95,7 +95,7 @@ The skill is discovered automatically from `.claude/skills/qa-ninja/`.
 Pass the ticket file as the argument:
 
 ```
-/qa-ninja demo/tickets/DEMO-001-boiler-booking.md
+/qa-ninja demo/tickets/DEMO-001-washing-machine-order.md
 ```
 
 You can also paste a ticket's text into the conversation after typing `/qa-ninja`.
